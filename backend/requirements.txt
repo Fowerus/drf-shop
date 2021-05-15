@@ -1,0 +1,14 @@
+asgiref==3.3.4
+cffi==1.14.5
+cryptography==3.4.7
+Django==3.2.2
+django-cors-headers==3.7.0
+django-resized==0.3.11
+djangorestframework==3.12.4
+jwt==1.2.0
+mysqlclient==2.0.3
+Pillow==8.2.0
+pycparser==2.20
+pytz==2021.1
+sqlparse==0.4.1
+uuid==1.30
