@@ -87,6 +87,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 	class Meta:
-		verbose_name_plural = 'Users'
-		verbose_name = 'User'
-		ordering = ['-date_creating']
+		verbose_name_plural 	= 'Users'
+		verbose_name 			= 'User'
+		ordering 				= ['-date_creating']

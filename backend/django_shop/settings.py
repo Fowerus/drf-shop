@@ -128,18 +128,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
-
-
-# Data of your merchant
-
-sci_domain = 'paykassa.pro'
-sci_path = '/sci/0.3/index.php'
-
-merchant_id = 0
-merchant_secret_key = ''
-merchant_domain = ''
-merchant_test = 0 #Test mode
-
-currency = '' #I'm going to add the ability to select a currency for payment, but now currency is BTC only
-currency_system = 0
-
