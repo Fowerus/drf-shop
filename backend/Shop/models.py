@@ -66,7 +66,7 @@ class Testimonial(models.Model):
 	date_creating				= models.DateTimeField(auto_now_add = True, verbose_name = 'Date')
 
 	def __str__(self):
-		return f'id : {self.id} | stars: {self.stars_count} | user: {self.user}'
+		return f'id : {self.id} | product: {self.product.id} | stars: {self.stars_count} | user: {self.user.id}'
 
 
 	class Meta:
@@ -80,13 +80,53 @@ class Cart(models.Model):
 	user 						= models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = 'Cart', related_name = 'user_cart')
 	product						= models.ForeignKey(Product, on_delete = models.CASCADE, verbose_name = 'Product', related_name = 'product_buyer')
 
+	in_order					= models.BooleanField(default = False)
+
 	date_creating				= models.DateTimeField(auto_now_add = True, verbose_name = 'Date')
 
 	def __str__(self):
-		return f'user: {self.user} | product: {self.product}'
+		return f'user: {self.user.id} | product: {self.product.id}'
 
 
 	class Meta:
 		verbose_name_plural 	= 'Carts products'
 		verbose_name 			= 'Product'
 		ordering	 			= ['-date_creating']
+
+
+
+class Order(models.Model):
+	user 						= models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = 'Orders', related_name = 'user_cart_orders')
+	hash_code					= models.CharField(max_length = 70, verbose_name = 'hash_code')
+	url							= models.CharField(max_length = 200, verbose_name = 'url')
+	order_code					= models.IntegerField()
+
+	paid						= models.BooleanField(default = False)
+	date_creating				= models.DateTimeField(auto_now = True)
+
+	def __str__(self):
+		return f'id: {self.id} | paid: {self.paid}'
+
+
+	class Meta:
+		verbose_name_plural 	= 'Orders'
+		verbose_name 		 	= 'Order'
+		ordering				= ['-date_creating']
+
+
+
+class Group(models.Model):
+	user 						= models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = 'Groups', related_name = 'user_cart_groups')
+	product						= models.ForeignKey(Product, on_delete = models.CASCADE, verbose_name = 'Groups', related_name = 'product_in_groups')
+	order 						= models.ForeignKey(Order, on_delete = models.CASCADE, verbose_name = 'order_id', related_name = 'groups_order')
+
+	date_creating 				= models.DateTimeField(auto_now = True)	
+
+	def __str__(self):
+		return f'id: {self.id} | user : {self.user.id} | product: {self.product.id} | order: {self.order.id}'
+
+
+	class Meta:
+		verbose_name_plural		= 'Groups'
+		verbose_name		 	= 'Group'
+		ordering				= ['-date_creating']
