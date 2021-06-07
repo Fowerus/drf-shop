@@ -111,11 +111,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
 	class ListSerializer(serializers.ModelSerializer):
 		user = UserViewSerializer()
-		products = ProductSerializer()
 
 		class Meta:
 			model = Order
-			fields = ['id', 'user', 'hash_code', 'url', 'products', 'order_code', 'paid', 'date_creating']
+			fields = ['id', 'user', 'hash_code', 'url', 'order_code', 'order_cost', 'paid', 'date_creating']
 
 
 	class Create(serializers.ModelSerializer):
@@ -125,7 +124,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 		class Meta:
 			model = Order
-			fields = ['id', 'user', 'hash_code', 'url', 'order_code', 'paid', 'date_creating']
+			fields = ['id', 'user', 'hash_code', 'url', 'order_code', 'order_cost', 'paid', 'date_creating']
 
 
 
@@ -134,11 +133,10 @@ class GroupSerializer(serializers.ModelSerializer):
 	class ListSerializer(serializers.ModelSerializer):
 		user = UserViewSerializer()
 		product = CurrentProductSerializer()
-		order = OrderSerializer.ListSerializer()
 
 		class Meta:
 			model = Group
-			fields = ['id', 'user', 'product', 'order', 'date_creating']
+			fields = ['id', 'user', 'product', 'date_creating']
 
 
 	class CreateSerializer(serializers.ModelSerializer):

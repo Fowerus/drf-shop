@@ -9,10 +9,11 @@ from Shop.models import *
 
 
 
+
 class UserViewSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
-		fields = ['id', 'email', 'last_name', 'first_name', 'image']
+		fields = ['id','email','last_name','first_name', 'image', 'date_creating']
 
 
 
@@ -24,7 +25,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = User
-		fields = ['username','email','last_name','first_name','password']
+		fields = ['email','last_name','first_name','password']
 
 
 
@@ -32,7 +33,6 @@ class UserLoginSerializer(serializers.Serializer):
 	email = serializers.EmailField(write_only=True)
 	password = serializers.CharField(max_length=128, write_only=True)
 
-	username = serializers.CharField(max_length=255, read_only=True)
 	token = serializers.CharField(max_length=255, read_only=True)
 
 	def validate(self, data):
@@ -47,24 +47,28 @@ class UserLoginSerializer(serializers.Serializer):
 			return Response(status = status.HTTP_404_NOT_FOUND)
 
 
-		try:
-			current_user = User.objects.get(email = email)
-
-			user = authenticate(username = current_user.username, email = email, password = password)
+		user = authenticate(email = email, password = password)
 
 
-			if user is None:
-				return Response(status = status.HTTP_404_NOT_FOUND)
+		if user is None:
+			return Response(status = status.HTTP_404_NOT_FOUND)
 
-			elif not user.is_active:
-				return Response(status = status.HTTP_404_NOT_FOUND)
-
-
-			validated_data = user.token
-			validated_data.setdefault('token', jwt.encode(user.token,settings.SECRET_KEY, algorithm = 'HS256'))
-
-			return validated_data
+		if not user.is_active:
+			return Response(status = status.HTTP_404_NOT_FOUND)
 
 
-		except:
-			return {'error': 'This user did not exist'}
+		validated_data = user.token
+		validated_data.setdefault('token', jwt.encode(user.token,settings.SECRET_KEY, algorithm = 'HS256'))
+
+		return validated_data
+
+
+
+class UserRetrieveDestroySerializer(serializers.ModelSerializer):
+
+	def create(self, validated_data):
+		return User.objects.create_user(**validated_data)
+
+	class Meta:
+		model = User
+		fileds = ['email', 'first_name', 'last_name', 'password']
