@@ -101,6 +101,8 @@ class Order(models.Model):
 	url							= models.CharField(max_length = 200, verbose_name = 'url')
 	order_code					= models.IntegerField()
 
+	order_cost					= models.FloatField(verbose_name = 'Cost')
+
 	paid						= models.BooleanField(default = False)
 	date_creating				= models.DateTimeField(auto_now = True)
 
