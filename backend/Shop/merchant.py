@@ -4,9 +4,9 @@ import requests
 
 # Data of your merchant
 
-merchant_id = 10092
-merchant_secret_key = '3sRWeTWX6K65i7RKMacI'
-merchant_domain = '2c12a254cbef.ngrok.io '
+merchant_id = 0
+merchant_secret_key = ''
+merchant_domain = ''
 merchant_test = False #Test mode
 
 merchant_currency = 'BTC' #I'm going to add the ability to select a currency for payment, but now currency is BTC only
