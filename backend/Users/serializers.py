@@ -64,11 +64,8 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 
-class UserRetrieveDestroySerializer(serializers.ModelSerializer):
-
-	def create(self, validated_data):
-		return User.objects.create_user(**validated_data)
+class UserRetrieveSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = User
-		fileds = ['email', 'first_name', 'last_name', 'password']
+		fileds = ['email','image', 'first_name', 'last_name', 'password']
