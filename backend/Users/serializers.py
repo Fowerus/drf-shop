@@ -39,16 +39,13 @@ class UserLoginSerializer(serializers.Serializer):
 		email = data.get('email',None)
 		password = data.get('password',None)
 
-
 		if email is None:
 			return Response(status = status.HTTP_404_NOT_FOUND)
 
 		if password is None:
 			return Response(status = status.HTTP_404_NOT_FOUND)
 
-
 		user = authenticate(email = email, password = password)
-
 
 		if user is None:
 			return Response(status = status.HTTP_404_NOT_FOUND)
@@ -56,9 +53,7 @@ class UserLoginSerializer(serializers.Serializer):
 		if not user.is_active:
 			return Response(status = status.HTTP_404_NOT_FOUND)
 
-
-		validated_data = user.token
-		validated_data.setdefault('token', jwt.encode(user.token,settings.SECRET_KEY, algorithm = 'HS256'))
+		validated_data = {'token':user.token}
 
 		return validated_data
 
@@ -68,4 +63,4 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = User
-		fileds = ['email','image', 'first_name', 'last_name', 'password']
+		fileds = ['email','image', 'first_name', 'last_name']

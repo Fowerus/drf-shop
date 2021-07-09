@@ -1,6 +1,4 @@
 import jwt
-from datetime import datetime
-from datetime import timedelta
 from django.conf import settings
 from django.db import models
 from django.core import validators
@@ -60,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 	def get_full_name(self):
-		return self.last_name + self.first_name
+		return self.last_name + ' ' + self.first_name
 
 
 	def get_short_name(self):
@@ -68,8 +66,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 	def _generate_jwt_token(self):
-		dt = datetime.now() + timedelta(days = 60)
-
 		token_encode = jwt.encode({
 			'id': self.pk,
 			'last_name':self.last_name,
@@ -78,9 +74,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 			'email':self.email,
 		}, settings.SECRET_KEY, algorithm='HS256')
 
-		token_decode = jwt.decode(token_encode, settings.SECRET_KEY, algorithms=["HS256"])
+		return token_encode
 
-		return token_decode
 
 	def __str__(self):
 		return f'id:{self.id} | first_name:{self.first_name} | email:{self.email}'
