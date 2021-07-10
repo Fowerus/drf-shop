@@ -1,13 +1,10 @@
 import jwt
 
+from django.contrib.auth import get_user_model
 from django.conf import settings
-from django.core.validators import validate_email
 from rest_framework.views import APIView
-from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .serializers import * 
 from .models import User
@@ -61,7 +58,7 @@ class UserRetrieveUpdateAPIView(APIView):
 
 	def get(self, request, user_id):
 		try:
-			current_user = User.objects.get(id = user_id)
+			current_user = get_user_model().objects.get(id = user_id)
 		except:
 			return Response(status = status.HTTP_400_BAD_REQUEST)
 
@@ -79,7 +76,7 @@ class UserRetrieveUpdateAPIView(APIView):
 
 			if current_user.check_password(request.data['password']):
 				try:
-					current_user = User.objects.get(id = user_id)
+					current_user = get_user_model().objects.get(id = user_id)
 				except:
 					return Response(status = status.HTTP_400_BAD_REQUEST)
 
@@ -100,7 +97,7 @@ class UserRetrieveUpdateAPIView(APIView):
 
 				if 'email' in request.data:
 					new_user_email = current_user.normalize_email(request.data['email'])
-					check_email = User.objects.filter(email = new_user_email)
+					check_email = get_user_model().objects.filter(email = new_user_email)
 
 					if len(check_email) == 0:
 						current_user.email = new_user_email

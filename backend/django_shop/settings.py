@@ -22,7 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '7r*1$99n%%^5_q!4@l7)by-&n9nib$6%qj=ed*_e8^d#z2&m#4'
 
+
+
+#REQUIRED VARIABLES
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
+AUTH_USER_MODEL = 'Users.User'
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,8 +97,6 @@ DATABASES = {
     }
 }
 
-
-AUTH_USER_MODEL = 'Users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

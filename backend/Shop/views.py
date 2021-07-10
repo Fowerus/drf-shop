@@ -1,13 +1,12 @@
 import uuid
 
-from django.core.validators import validate_email
+from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework import generics
 
-from Users.models import User
 from .models import *
 from .serializers import *
 from .merchant import paykassa
@@ -71,7 +70,7 @@ class CartListCreateAPIView(APIView):
 	def get(self, requests, user_id):
 
 		try:
-			current_user = User.objects.get(id = user_id)
+			current_user = get_user_model().objects.get(id = user_id)
 		except:
 			return Response(status = status.HTTP_400_BAD_REQUEST)
 		serializer = self.serializer_class.ListSerializer(current_user.user_cart.all().filter(in_order = False), many = True)
@@ -150,7 +149,7 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 				for i in requests.data['products_id']:
 					Group.objects.create(user = User.objects.get(id = user_id), product = Product.objects.get(id = int(i)), order = order)
 
-				for i in User.objects.get(id = user_id).user_cart.all():
+				for i in get_user_model().objects.get(id = user_id).user_cart.all():
 					i.in_order = True
 					i.save()
 
