@@ -1,16 +1,12 @@
-import jwt
-from django.conf import settings
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from rest_framework import status
-from rest_framework.response import Response
 
 from Shop.models import *
 
 
 
 
-class UserViewSerializer(serializers.ModelSerializer):
+class UserRetrieveSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
 		fields = ['id','email','last_name','first_name', 'image', 'date_creating']
@@ -56,11 +52,3 @@ class UserLoginSerializer(serializers.Serializer):
 		validated_data = {'token':user.token}
 
 		return validated_data
-
-
-
-class UserRetrieveSerializer(serializers.ModelSerializer):
-
-	class Meta:
-		model = User
-		fileds = ['email','image', 'first_name', 'last_name']

@@ -1,12 +1,7 @@
-import jwt
-from django.conf import settings
-from django.contrib.auth import authenticate
 from rest_framework import serializers
-from rest_framework import status
-from rest_framework.response import Response
 
 from .models import *
-from Users.serializers import UserViewSerializer
+from Users.serializers import UserRetrieveSerializer
 
 
 
@@ -52,7 +47,7 @@ class TestimonialSerializer(serializers.ModelSerializer):
 
 	class ListSerializer(serializers.ModelSerializer):
 		product = CurrentProductSerializer()
-		user = UserViewSerializer()
+		user = UserRetrieveSerializer()
 
 		class Meta:
 			model = Testimonial
@@ -82,7 +77,7 @@ class CartSerializer(serializers.ModelSerializer):
 
 	class ListSerializer(serializers.ModelSerializer):
 		product = CurrentProductSerializer()
-		user = UserViewSerializer()
+		user = UserRetrieveSerializer()
 
 		class Meta:
 			model = Cart
@@ -110,7 +105,7 @@ class CartSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
 
 	class ListSerializer(serializers.ModelSerializer):
-		user = UserViewSerializer()
+		user = UserRetrieveSerializer()
 
 		class Meta:
 			model = Order
@@ -131,7 +126,7 @@ class OrderSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
 
 	class ListSerializer(serializers.ModelSerializer):
-		user = UserViewSerializer()
+		user = UserRetrieveSerializer()
 		product = CurrentProductSerializer()
 
 		class Meta:
