@@ -12,8 +12,8 @@ from django_resized import ResizedImageField
 #User's auth
 class UserManager(BaseUserManager):
 	def _create_user(self, email, last_name, first_name, password = None, **extra_fields):
-		email 					= self.normalize_email(email)
-		user 					= self.model(email = email, last_name = last_name, first_name = first_name, **extra_fields)
+		email = self.normalize_email(email)
+		user = self.model(email = email, last_name = last_name, first_name = first_name, **extra_fields)
 		user.set_password(password)
 		user.save(using = self._db)
 
@@ -36,15 +36,15 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-	email 						= models.EmailField(validators = [validators.EmailValidator], unique = True, blank = False, verbose_name = 'email')
-	image 						= ResizedImageField(size = [225,225], upload_to = './static/Users/images', blank = True, default = '../static/Users/images/default-user-image.jpeg', verbose_name = 'image')
-	last_name 					= models.CharField(max_length = 150, verbose_name = 'last_name')
-	first_name 					= models.CharField(max_length = 150, verbose_name = 'first_name')
-	date_creating 				= models.DateTimeField(auto_now_add = True, verbose_name = 'date_creating')
+	email = models.EmailField(validators = [validators.EmailValidator], unique = True, blank = False, verbose_name = 'email')
+	image = ResizedImageField(size = [225,225], upload_to = './static/Users/images', blank = True, default = '../static/Users/images/default-user-image.jpeg', verbose_name = 'image')
+	last_name = models.CharField(max_length = 150, verbose_name = 'last_name')
+	first_name = models.CharField(max_length = 150, verbose_name = 'first_name')
+	date_creating = models.DateTimeField(auto_now_add = True, verbose_name = 'date_creating')
 
-	is_staff 					= models.BooleanField(default = False)
-	is_superuser 				= models.BooleanField(default = False)
-	is_active 					= models.BooleanField(default = True)
+	is_staff = models.BooleanField(default = False)
+	is_superuser = models.BooleanField(default = False)
+	is_active = models.BooleanField(default = True)
 
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ('last_name','first_name')

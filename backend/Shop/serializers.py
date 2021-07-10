@@ -59,9 +59,11 @@ class TestimonialSerializer(serializers.ModelSerializer):
 		def create(self, validated_data):
 			return Testimonial.objects.create(**validated_data)
 
+
 		def get_current_testimonial(self, id):
 			return Testimonial.objects.get(id = id)
 			
+
 		class Meta:
 			model = Testimonial
 			fields = ['id', 'product', 'stars_count', 'description', 'user', 'date_creating']
@@ -89,12 +91,15 @@ class CartSerializer(serializers.ModelSerializer):
 		def create(self, validated_data):
 			return Cart.objects.create(**validated_data)
 
+
 		def get_current_product(self, id):
 			return Cart.objects.get(id = id)
+
 
 		class Meta:
 			model = Cart
 			fields = ['id', 'product', 'user', 'date_creating']
+
 
 	class Meta:
 		model = Cart
@@ -117,6 +122,7 @@ class OrderSerializer(serializers.ModelSerializer):
 		def create(self, validated_date):
 			return Order.objects.create(**validated_date)
 
+
 		class Meta:
 			model = Order
 			fields = ['id', 'user', 'hash_code', 'url', 'order_code', 'order_cost', 'paid', 'date_creating']
@@ -129,6 +135,7 @@ class GroupSerializer(serializers.ModelSerializer):
 		user = UserRetrieveSerializer()
 		product = CurrentProductSerializer()
 
+
 		class Meta:
 			model = Group
 			fields = ['id', 'user', 'product', 'date_creating']
@@ -138,6 +145,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 		def create(self, validated_date):
 			return Group.objects.create(**validated_date)
+
 
 		class Meta:
 			model = Group
