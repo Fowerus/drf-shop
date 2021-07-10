@@ -18,12 +18,12 @@ class AllProductsAPIView(APIView):
 	serializer_class = ProductSerializer
 
 	def get(self, requests, category_name):
-		
 		try:
 			current_category = Category.objects.get(name = category_name)
 			products = current_category.categories_products.all()
 		except:
 			return Response(status = status.HTTP_400_BAD_REQUEST)
+
 		serializer = self.serializer_class(products, many = True)
 		return Response(serializer.data, status = status.HTTP_200_OK)
 
@@ -40,23 +40,21 @@ class TestimonialsListCreateAPIView(APIView):
 	serializer_class = TestimonialSerializer
 
 	def get(self, requests, product_id):
-
 		try:
 			current_product = Product.objects.get(id = product_id)
 		except:
 			return Response(status = status.HTTP_400_BAD_REQUEST)
+
 		serializer = self.serializer_class.ListSerializer(current_product.products_testimonials, many = True)
 		return Response(serializer.data, status = status.HTTP_200_OK)
 
 
 	def post(self, requests, product_id):
-
 		requests.data.update({'product':product_id})
-
 		serializer = self.serializer_class.CreateSerializer(data = requests.data)
+
 		if serializer.is_valid():
 			serializer.save()
-
 			serializer = serializer.get_current_testimonial(serializer.data['id'])
 			return Response(self.serializer_class.ListSerializer(serializer).data, status = status.HTTP_201_CREATED)
 
@@ -68,22 +66,21 @@ class CartListCreateAPIView(APIView):
 	serializer_class = CartSerializer
 
 	def get(self, requests, user_id):
-
 		try:
 			current_user = get_user_model().objects.get(id = user_id)
 		except:
 			return Response(status = status.HTTP_400_BAD_REQUEST)
+
 		serializer = self.serializer_class.ListSerializer(current_user.user_cart.all().filter(in_order = False), many = True)
 		return Response(serializer.data, status = status.HTTP_200_OK)
 
 
 	def post(self, requests, user_id):
-
 		requests.data.update({'user':user_id})
 		serializer = self.serializer_class.CreateSerializer(data = requests.data)
+
 		if serializer.is_valid():
 			serializer.save()
-
 			serializer = serializer.get_current_product(serializer.data['id'])
 			return Response(self.serializer_class.ListSerializer(serializer).data, status = status.HTTP_201_CREATED)
 
@@ -91,7 +88,6 @@ class CartListCreateAPIView(APIView):
 
 
 	def delete(self, requests, user_id, product_id):
-
 		product = Cart.objects.filter(user = user_id).get(product = product_id)
 		product.delete()
 
@@ -103,9 +99,7 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 	serializer_class = OrderSerializer
 
 	def list(self, requests, user_id):
-
 		serializer_data = {}
-
 		orders_no_paid = Order.objects.filter(user = user_id).filter(paid = False)
 
 		if orders_no_paid:
@@ -116,7 +110,6 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 				serializer_data_no_paid[i].update({'products':GroupSerializer.ListSerializer(orders_no_paid[i].groups_order.all(),many = True).data})
 
 			serializer_data.update({'no_paid':serializer_data_no_paid})
-
 
 		orders_paid = Order.objects.filter(user = user_id).filter(paid = True)
 
@@ -129,12 +122,10 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 
 			serializer_data.update({'paid':serializer_data_paid})
 
-
 		return Response(serializer_data, status = status.HTTP_200_OK)
 
 
 	def create(self, requests, user_id):
-
 		try:
 			order_code = int(str(uuid.uuid1().int)[:10])
 			create_order = paykassa.sci_create_order(float(requests.data['amount']), order_code, comment = '')
@@ -153,7 +144,6 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 					i.in_order = True
 					i.save()
 
-
 				return self.list(requests, user_id)
 
 			return Response(status = status.HTTP_400_BAD_REQUEST)
@@ -163,7 +153,6 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 
 
 	def confirm(self, requests, hash_code):
-
 		try:
 			confirm_order = paykassa.sci_confirm_order(hash_code)
 
@@ -171,7 +160,6 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 				order = Order.objects.get(hash_code = hash_code)
 				order.paid = True
 				order.save()
-
 				return self.list(requests, order.user.id)
 
 			return Response({'error': 'Order not confirmed'}, status = status.HTTP_400_BAD_REQUEST)
@@ -181,14 +169,10 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 
 
 	def delete(self, requests, hash_code):
-
 		try:
 			order = Order.objects.get(hash_code = hash_code)
 			order.delete()
-
 			return self.list(requests, order.user.id)
 
 		except:
 			return Response(status = status.HTTP_404_NOT_FOUND)
-
-
