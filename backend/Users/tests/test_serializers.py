@@ -14,16 +14,33 @@ class TestSerializers(TestCase):
 
 	def testUserRetrieveSerializer(self):
 		self.user = User.objects.get(id = 1000)
-		serializer_data = UserRetrieveSerializer(self.user).data
-		keys = [i for i in serializer_data.keys()]
+		serializer = UserRetrieveSerializer(self.user)
 
-		#Cheking all keys in serializer.data
-		self.assertEquals(set(keys),{"id","email","last_name","first_name", "image", "date_creating"})
+		#Cheking the `fields` in serailzier meta-class
+		self.assertEquals(set(serializer.Meta.fields),{"id","email","last_name","first_name", "image", "date_creating"})
+
+		#Checking the `model` in serializer meta-class
+		self.assertEquals(serializer.Meta.model, User)
 
 
 	def testUserLoginSerializer(self):
 		data = {"email":"here_is_johnny@gmail.com", "password":"john"}
 		serializer = UserLoginSerializer(data = data)
+
+		#Checking serializer fields
+		self.assertEquals(set(serializer.fields.keys()), {'email','password', 'token'})
+
+		#Checking the attributes of serializer fields
+		#email
+		self.assertTrue(serializer.fields['email'].write_only)
+
+		#password
+		self.assertEquals(serializer.fields['password'].max_length, 128)
+		self.assertTrue(serializer.fields['password'].write_only)
+
+		#token
+		self.assertEquals(serializer.fields['token'].max_length, 255)
+		self.assertTrue(serializer.fields['token'].read_only)
 
 		#Cheking of data validation and the presence of the token in the serializer.data  
 		self.assertTrue(serializer.is_valid())
@@ -37,6 +54,17 @@ class TestSerializers(TestCase):
 	def testUserRegistrationSerializer(self):
 		data = {"email":"test_user@gmail.com", "first_name":"0010001us","last_name":"er","password":"test_user_password"}
 		serializer = UserRegistrationSerializer(data = data)
+
+		#Cheking the `fields` in serailzier meta-class
+		self.assertEquals(set(serializer.Meta.fields), {'email','last_name','first_name','password'})
+
+		#Checking password field in serializer
+		self.assertTrue('password' in list(serializer.fields.keys()))
+
+		#Checking the attrubutes of serializer fields
+		self.assertEquals(serializer.fields['password'].max_length, 128)
+		self.assertEquals(serializer.fields['password'].min_length, 8)
+		self.assertTrue(serializer.fields['password'].write_only)
 
 		#Checking of data validation
 		self.assertTrue(serializer.is_valid())
