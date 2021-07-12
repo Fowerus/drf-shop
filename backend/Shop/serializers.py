@@ -109,44 +109,19 @@ class CartSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
 
-	class ListSerializer(serializers.ModelSerializer):
-		user = UserRetrieveSerializer()
+	user = UserRetrieveSerializer()
 
-		class Meta:
-			model = Order
-			fields = ['id', 'user', 'hash_code', 'url', 'order_code', 'order_cost', 'paid', 'date_creating']
-
-
-	class Create(serializers.ModelSerializer):
-
-		def create(self, validated_date):
-			return Order.objects.create(**validated_date)
-
-
-		class Meta:
-			model = Order
-			fields = ['id', 'user', 'hash_code', 'url', 'order_code', 'order_cost', 'paid', 'date_creating']
+	class Meta:
+		model = Order
+		fields = ['id', 'user', 'hash_code', 'url', 'order_code', 'order_cost', 'paid', 'date_creating']
 
 
 
 class GroupSerializer(serializers.ModelSerializer):
 
-	class ListSerializer(serializers.ModelSerializer):
-		user = UserRetrieveSerializer()
-		product = CurrentProductSerializer()
+	user = UserRetrieveSerializer()
+	product = CurrentProductSerializer()
 
-
-		class Meta:
-			model = Group
-			fields = ['id', 'user', 'product', 'date_creating']
-
-
-	class CreateSerializer(serializers.ModelSerializer):
-
-		def create(self, validated_date):
-			return Group.objects.create(**validated_date)
-
-
-		class Meta:
-			model = Group
-			fields = ['id', 'user', 'product', 'order', 'date_creating']
+	class Meta:
+		model = Group
+		fields = ['id', 'user', 'product', 'date_creating']

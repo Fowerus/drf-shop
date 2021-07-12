@@ -31,7 +31,7 @@ class AllProductsAPIView(APIView):
 
 class CurrentProductRetrieveAPIView(generics.RetrieveAPIView):
 	queryset = Product.objects.all()
-	serializer_class = CurrentProductSerializer
+	serializer_class = ProductSerializer
 	lookup_field = 'id'
 
 
@@ -103,22 +103,22 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 		orders_no_paid = Order.objects.filter(user = user_id).filter(paid = False)
 
 		if orders_no_paid:
-			serializer = self.serializer_class.ListSerializer(orders_no_paid, many = True)
+			serializer = self.serializer_class(orders_no_paid, many = True)
 			serializer_data_no_paid = serializer.data
 
 			for i in range(len(serializer_data_no_paid)):
-				serializer_data_no_paid[i].update({'products':GroupSerializer.ListSerializer(orders_no_paid[i].groups_order.all(),many = True).data})
+				serializer_data_no_paid[i].update({'products':GroupSerializer(orders_no_paid[i].groups_order.all(),many = True).data})
 
 			serializer_data.update({'no_paid':serializer_data_no_paid})
 
 		orders_paid = Order.objects.filter(user = user_id).filter(paid = True)
 
 		if orders_paid:
-			serializer = self.serializer_class.ListSerializer(orders_paid, many = True)
+			serializer = self.serializer_class(orders_paid, many = True)
 			serializer_data_paid = serializer.data
 
 			for i in range(len(serializer_data_paid)):
-				serializer_data_paid[i].update({'products':GroupSerializer.ListSerializer(orders_no_paid[i].groups_order.all(),many = True).data})
+				serializer_data_paid[i].update({'products':GroupSerializer(orders_no_paid[i].groups_order.all(),many = True).data})
 
 			serializer_data.update({'paid':serializer_data_paid})
 
