@@ -7,24 +7,23 @@ from Users.serializers import *
 class TestSerializers(TestCase):
 
 	def setUp(self):
-		self.user = User(id = 1000, first_name = "John", last_name = "Smith", email = "here_is_johnny@gmail.com")
-		self.user.set_password("john")
+		self.user = User(id = 1000, first_name = 'John', last_name = 'Smith', email = 'here_is_johnny@gmail.com')
+		self.user.set_password('john')
 		self.user.save()
 
 
 	def testUserRetrieveSerializer(self):
-		self.user = User.objects.get(id = 1000)
 		serializer = UserRetrieveSerializer(self.user)
 
-		#Cheking the `fields` in serailzier meta-class
-		self.assertEquals(set(serializer.Meta.fields),{"id","email","last_name","first_name", "image", "date_creating"})
+		#Cheсking the `fields` in serailzier meta-class
+		self.assertEquals(serializer.Meta.fields,['id','email','last_name','first_name', 'image', 'date_creating'])
 
 		#Checking the `model` in serializer meta-class
 		self.assertEquals(serializer.Meta.model, User)
 
 
 	def testUserLoginSerializer(self):
-		data = {"email":"here_is_johnny@gmail.com", "password":"john"}
+		data = {'email':'here_is_johnny@gmail.com', 'password':'john'}
 		serializer = UserLoginSerializer(data = data)
 
 		#Checking serializer fields
@@ -44,7 +43,7 @@ class TestSerializers(TestCase):
 
 		#Cheking of data validation and the presence of the token in the serializer.data  
 		self.assertTrue(serializer.is_valid())
-		self.assertTrue("token" in serializer.data)
+		self.assertTrue('token' in serializer.data)
 
 
 	def tearDown(self):
@@ -52,11 +51,11 @@ class TestSerializers(TestCase):
 
 
 	def testUserRegistrationSerializer(self):
-		data = {"email":"test_user@gmail.com", "first_name":"0010001us","last_name":"er","password":"test_user_password"}
+		data = {'email':'test_user@gmail.com', 'first_name':'0010001us','last_name':'er','password':'test_user_password'}
 		serializer = UserRegistrationSerializer(data = data)
 
-		#Cheking the `fields` in serailzier meta-class
-		self.assertEquals(set(serializer.Meta.fields), {'email','last_name','first_name','password'})
+		#Cheсking the `fields` in serailzier meta-class
+		self.assertEquals(serializer.Meta.fields, ['email','last_name','first_name','password'])
 
 		#Checking password field in serializer
 		self.assertTrue('password' in list(serializer.fields.keys()))
@@ -70,7 +69,7 @@ class TestSerializers(TestCase):
 		self.assertTrue(serializer.is_valid())
 
 		serializer.save()
-		user = User.objects.get(email = "test_user@gmail.com")
+		user = User.objects.get(email = 'test_user@gmail.com')
 
 		#Checking a new user
 		self.assertTrue(user.check_password('test_user_password'))
