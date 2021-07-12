@@ -4,8 +4,6 @@ from django_resized import ResizedImageField
 from Users.models import *
 
 
-
-
 class Category(models.Model):
 	name = models.CharField(max_length = 30, verbose_name = 'Name')
 	date_creating = models.DateTimeField(auto_now_add = True, verbose_name = 'Date')
@@ -31,8 +29,8 @@ class Currency(models.Model):
 
 
 	class Meta:
-		verbose_name_plural	= 'Carrencies'
-		verbose_name = 'Carrency'
+		verbose_name_plural	= 'Currencies'
+		verbose_name = 'Currency'
 		ordering = ['-date_creating']
 
 
@@ -90,7 +88,7 @@ class Cart(models.Model):
 
 	class Meta:
 		verbose_name_plural = 'Carts products'
-		verbose_name = 'Product'
+		verbose_name = 'Carts product'
 		ordering = ['-date_creating']
 
 
@@ -104,7 +102,7 @@ class Order(models.Model):
 	order_cost = models.FloatField(verbose_name = 'Cost')
 
 	paid = models.BooleanField(default = False)
-	date_creating = models.DateTimeField(auto_now = True)
+	date_creating = models.DateTimeField(auto_now = True, verbose_name = 'Date')
 
 	def __str__(self):
 		return f'id: {self.id} | paid: {self.paid}'
@@ -122,7 +120,7 @@ class Group(models.Model):
 	product	= models.ForeignKey(Product, on_delete = models.CASCADE, verbose_name = 'Groups', related_name = 'product_in_groups')
 	order = models.ForeignKey(Order, on_delete = models.CASCADE, verbose_name = 'order_id', related_name = 'groups_order')
 
-	date_creating = models.DateTimeField(auto_now = True)	
+	date_creating = models.DateTimeField(auto_now = True, verbose_name = 'Date')	
 
 	def __str__(self):
 		return f'id: {self.id} | user : {self.user.id} | product: {self.product.id} | order: {self.order.id}'

@@ -7,8 +7,6 @@ from django.contrib.auth.models import PermissionsMixin
 from django_resized import ResizedImageField
 
 
-
-
 #User's auth
 class UserManager(BaseUserManager):
 	def _create_user(self, email, last_name, first_name, password = None, **extra_fields):
