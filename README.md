@@ -8,7 +8,7 @@ It is a simle online store with bitcoin payment and to be precise with Paykassa 
 
 * Establish a virtual environment(recommend use python3)  
   In python3 you can do that with with `python3 -m venv <environment name>`
-* Install all libraries from requierements.txt  
+* Install all libraries from requirements.txt  
   You can do that with run `python3 -m pip install -r requirements.txt`
 
 ## **Testing**
