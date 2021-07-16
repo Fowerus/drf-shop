@@ -17,6 +17,7 @@ Before running tests you need
 * Create the Paykassa merchant
 * Go to file `backend/Shop/merchant.py`
 * Change `merchant_id`, `merchant_secret_key`, `merchant_domain` according to your merchant details.
+* Run `python3 manage.py test`
 
 But if you don't want to do that you can comment last three methods in `backend/Shop/tests/test_api.py` and testing the payment functions will be ignored.
 
