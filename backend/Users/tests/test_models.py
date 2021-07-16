@@ -1,15 +1,17 @@
 import jwt
 
-from django.test import TestCase
+from rest_framework.test import APITestCase
+from django.contrib.auth import get_user_model
 from django.conf import settings
 
 from Users.models import User
 
 
-class TestModels(TestCase):
+
+class TestUsersModels(APITestCase):
 
 	def setUp(self):
-		self.user = User(id = 1000, first_name = "John", last_name = "Smith", email = "here_is_johnny@gmail.com")
+		self.user = get_user_model()(id = 1000, first_name = "John", last_name = "Smith", email = "here_is_johnny@gmail.com")
 		self.user.set_password("john")
 		self.user.save()
 

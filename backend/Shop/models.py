@@ -38,7 +38,7 @@ class Currency(models.Model):
 class Product(models.Model):
 	name = models.CharField(max_length = 200, verbose_name = 'Name')
 	description	= models.CharField(max_length = 1000, verbose_name = 'Description')
-	image = ResizedImageField(size = [225,225], upload_to='./static/Shop/images', verbose_name = 'Image')
+	image = ResizedImageField(size = [225,225], upload_to='./static/Shop/images', default = '../static/Shop/images/default-product-image.jpg', verbose_name = 'Image')
 	category = models.ForeignKey(Category, on_delete = models.PROTECT, verbose_name = 'Category', default = 1, related_name = 'categories_products')
 	currency = models.ForeignKey(Currency, on_delete = models.CASCADE, verbose_name = 'Currency', default = 1, related_name = 'currency_product')
 	cost = models.FloatField(verbose_name = 'Cost')

@@ -135,7 +135,8 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 					user = User.objects.get(id = user_id), 
 					hash_code = create_order['data']['params']['hash'],
 					url = create_order['data']['url'],
-					order_code = order_code)
+					order_code = order_code,
+					order_cost = float(requests.data['amount']))
 
 				for i in requests.data['products_id']:
 					Group.objects.create(user = User.objects.get(id = user_id), product = Product.objects.get(id = int(i)), order = order)
@@ -162,7 +163,7 @@ class OrderListCreateViewSet(viewsets.ViewSet):
 				order.save()
 				return self.list(requests, order.user.id)
 
-			return Response({'error': 'Order not confirmed'}, status = status.HTTP_400_BAD_REQUEST)
+			return Response({'error': 'Order not confirmed'}, status = status.HTTP_200_OK)
 
 		except:
 			return Response(status = status.HTTP_404_NOT_FOUND)
