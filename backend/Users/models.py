@@ -35,7 +35,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 	email = models.EmailField(validators = [validators.EmailValidator], unique = True, blank = False, verbose_name = 'email')
-	image = ResizedImageField(size = [225,225], upload_to = './static/Users/images', blank = True, default = '../static/Users/images/default-user-image.jpeg', verbose_name = 'image')
+	image = ResizedImageField(size = [225,225], upload_to = '../static/Users/images', blank = True, default = '../static/Users/images/default-user-image.jpeg', verbose_name = 'image')
 	last_name = models.CharField(max_length = 150, verbose_name = 'last_name')
 	first_name = models.CharField(max_length = 150, verbose_name = 'first_name')
 	date_creating = models.DateTimeField(auto_now_add = True, verbose_name = 'date_creating')
