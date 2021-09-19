@@ -1,4 +1,4 @@
-# **Django-Rest-Framework Shop**
+# **DRF API Internet Shop**
 
 ## **Inroduction**
 
