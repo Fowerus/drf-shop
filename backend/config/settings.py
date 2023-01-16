@@ -28,10 +28,10 @@ SECRET_KEY = '7r*1$99n%%^5_q!4@l7)by-&n9nib$6%qj=ed*_e8^d#z2&m#4'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
-
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+APPEND_SLASH = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'django_resized',
+    'django_filters',
+    'djoser',
 
     'Users'
 ]
@@ -132,3 +135,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
+
+
+# Rest Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
+
+#DJOSER settings
+DJOSER = {
+    'SEND_ACTIVATION_EMAIL': True,
+}
