@@ -137,7 +137,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 
-# Rest Framework settings
+# Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
@@ -145,7 +145,27 @@ REST_FRAMEWORK = {
 }
 
 
-#DJOSER settings
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+
+# DJOSER
 DJOSER = {
-    'SEND_ACTIVATION_EMAIL': True,
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
+
+    'SERIALIZERS': {
+        'user': 'Users.serializers.MyUserSerializer',
+        'current_user': 'Users.serializers.MyUserSerializer',
+    },
+
+    'PERMISSIONS': {
+        'user_list': ['djoser.permissions.CurrentUserOrAdminOrReadOnly']
+    }
 }
